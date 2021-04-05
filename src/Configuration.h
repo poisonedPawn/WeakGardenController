@@ -10,7 +10,7 @@
 #define MQTT_USER "YOUR_MQTT_USER"
 #define MQTT_PASSWORD "YOUR_MQTT_PASS"
 
-#define MQTT_TOPICHS "/casa/jardin/hum_suelo"
-#define MQTT_TOPICH "/casa/jardin/humedad"
-#define MQTT_TOPICT "/casa/jardin/temperatura"
-#define MQTT_TOPICP "/casa/jardin/presion"
+#define MQTT_TOPICHS "Topic1"
+#define MQTT_TOPICH "Topic2"
+#define MQTT_TOPICT "Topic3"
+#define MQTT_TOPICP "Topic4"
