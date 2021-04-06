@@ -75,7 +75,9 @@ void ESP8266tools::setup_wifi()
     Serial.println();
     Serial.print("Connecting to ");
     Serial.println(_ssid);
-
+    
+    // STA Mode: actua solo como cliente puesto que aun no se ha implementado la configuración/panel de control por HTTP
+    WiFi.mode(WIFI_STA);
     WiFi.begin(_ssid, _password);
 
     while (WiFi.status() != WL_CONNECTED)
