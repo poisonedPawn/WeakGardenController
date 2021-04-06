@@ -15,6 +15,13 @@ This is a garden controller designed for nodeMCU development board. Implements M
 7. Status led.
 8. Jumper for RST mode.
 
+## Dependencies
+1. PubSubClient
+2. ESP8266WiFi
+3. BME280 
+4. Wire 
+5. SPI
+
 ## Roadmap
 1. OTA Update
 2. DeepSleep and eco function
