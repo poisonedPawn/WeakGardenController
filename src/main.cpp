@@ -10,6 +10,7 @@
 #include <SPI.h>
 
 BME280I2C bme;
+SoilMoisture smSensor1;
 //Adafruit_BME280 bme; // I2C
 //Adafruit_BME280 bme(BME_CS); // hardware SPI
 //Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // software SPI
@@ -19,7 +20,7 @@ MyMQTTtools myMQTTtools;
 
 long probeTime = 30000;    // 3min = 180000, 30seg = 30000
 long lastMsg = -probeTime; // Cycle porpouses
-char msg[50];
+char msg[BUFFER_SIZE];
 int value = 0;
 int sensorValue = -1;
 
@@ -59,41 +60,42 @@ void loop()
 {
   myMQTTtools.keepalive();
 
-  float temp(NAN), hum(NAN), pres(NAN);
-  BME280::TempUnit tempUnit(BME280::TempUnit_Celsius);
-  BME280::PresUnit presUnit(BME280::PresUnit_Pa);
-
   long now = millis();
   if (now - lastMsg > probeTime)
   {
     
+
+    float temp(NAN), hum(NAN), pres(NAN);
+    BME280::TempUnit tempUnit(BME280::TempUnit_Celsius);
+    BME280::PresUnit presUnit(BME280::PresUnit_Pa);
+
     lastMsg = now;
     ++value;
 
     bme.read(pres, temp, hum, tempUnit, presUnit);
-    snprintf(msg, 75, "%f", temp);
+    snprintf(msg, BUFFER_SIZE, "%f", temp);
     Serial.print("Temperatura: ");
     Serial.print(temp);
     Serial.print(" Temperatura parse: ");
     Serial.println(msg);
     myMQTTtools.publish(MQTT_TOPICT, msg);
 
-    snprintf(msg, 75, "%f", hum);
+    snprintf(msg, BUFFER_SIZE, "%f", hum);
     Serial.print("Humedad: ");
     Serial.println(hum);
     Serial.print(" Humedad parse: ");
     Serial.println(msg);
     myMQTTtools.publish(MQTT_TOPICH, msg);
 
-    snprintf(msg, 75, "%f", pres);
+    snprintf(msg, BUFFER_SIZE, "%f", pres);
     Serial.print("Presion: ");
     Serial.println(pres);
     Serial.print(" Presion parse: ");
     Serial.println(msg);
     myMQTTtools.publish(MQTT_TOPICP, msg);
 
-    sensorValue = analogRead(MOISTURES);
-    snprintf(msg, 75, "%d", sensorValue);
+    sensorValue = smSensor1.read();
+    snprintf(msg, BUFFER_SIZE, "%d", sensorValue);
     Serial.print("Humedad Suelo: ");
     Serial.println(sensorValue);
     Serial.print("Humedad Suelo parse: ");
