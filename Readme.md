@@ -1,7 +1,8 @@
 # Weak Garden Controller
 
 This is a garden controller designed for nodeMCU dev board. Implements MQTT/TCP client. It is configured through a header C file.
-![WeakGardenController](./docs.//controller2.png)
+
+<img src="docs/controller2.jpg" width="200">
 
 ## Features
 1. PlatformIO: simple development, build and uploap 
