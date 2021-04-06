@@ -1,28 +1,21 @@
-#include <Arduino.h>
 #include "Configuration.h"
 #include "MyMQTTtools.h"
-//#include "ESP8266tools.h"
-//#include <PubSubClient.h>
-//#include "BMEtools.h"
+//#include "BME280tools.h"
 #include "SoilMoisture.h"
 #include <BME280I2C.h>
 #include <Wire.h>
 #include <SPI.h>
 
 BME280I2C bme;
-SoilMoisture smSensor1;
-//Adafruit_BME280 bme; // I2C
-//Adafruit_BME280 bme(BME_CS); // hardware SPI
-//Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // software SPI
-float temperature, humidity, pressure, altitude;
 
 MyMQTTtools myMQTTtools;
 
 long probeTime = 30000;    // 3min = 180000, 30seg = 30000
 long lastMsg = -probeTime; // Cycle porpouses
 char mqtt_msg_buffer[BUFFER_SIZE];
-int value = 0;
-int sensorValue = -1;
+
+SoilMoisture smSensor1;
+int soilMoistureValue = -1;
 
 void bme280setup()
 {
@@ -68,39 +61,29 @@ void loop()
     BME280::PresUnit presUnit(BME280::PresUnit_Pa);
 
     lastMsg = now;
-    ++value;
 
     bme.read(pres, temp, hum, tempUnit, presUnit);
-    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", temp);
+    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%f", temp);
     Serial.print("Temperatura: ");
-    Serial.print(temp);
-    Serial.print(" Temperatura parse: ");
-    Serial.println(mqtt_msg_buffer);
+    Serial.println(temp);
     myMQTTtools.publish(MQTT_TOPICT, mqtt_msg_buffer);
 
-    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", hum);
+    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%f", hum);
     Serial.print("Humedad: ");
     Serial.println(hum);
-    Serial.print(" Humedad parse: ");
-    Serial.println(mqtt_msg_buffer);
     myMQTTtools.publish(MQTT_TOPICH, mqtt_msg_buffer);
 
-    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", pres);
+    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%f", pres);
     Serial.print("Presion: ");
     Serial.println(pres);
-    Serial.print(" Presion parse: ");
-    Serial.println(mqtt_msg_buffer);
     myMQTTtools.publish(MQTT_TOPICP, mqtt_msg_buffer);
 
-    sensorValue = smSensor1.read();
-    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%d", sensorValue);
+    soilMoistureValue = smSensor1.read();
+    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%d", soilMoistureValue);
     Serial.print("Humedad Suelo: ");
-    Serial.println(sensorValue);
-    Serial.print("Humedad Suelo parse: ");
-    Serial.println(mqtt_msg_buffer);
+    Serial.println(soilMoistureValue);
     myMQTTtools.publish(MQTT_TOPICHS, mqtt_msg_buffer);
   }
-
   Serial.println("Loop");
-  delay(5000);
+  delay(probeTime - 1);
 }
