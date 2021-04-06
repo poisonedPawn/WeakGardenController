@@ -20,7 +20,7 @@ MyMQTTtools myMQTTtools;
 
 long probeTime = 30000;    // 3min = 180000, 30seg = 30000
 long lastMsg = -probeTime; // Cycle porpouses
-char msg[BUFFER_SIZE];
+char mqtt_msg_buffer[BUFFER_SIZE];
 int value = 0;
 int sensorValue = -1;
 
@@ -63,8 +63,6 @@ void loop()
   long now = millis();
   if (now - lastMsg > probeTime)
   {
-    
-
     float temp(NAN), hum(NAN), pres(NAN);
     BME280::TempUnit tempUnit(BME280::TempUnit_Celsius);
     BME280::PresUnit presUnit(BME280::PresUnit_Pa);
@@ -73,34 +71,34 @@ void loop()
     ++value;
 
     bme.read(pres, temp, hum, tempUnit, presUnit);
-    snprintf(msg, BUFFER_SIZE, "%f", temp);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", temp);
     Serial.print("Temperatura: ");
     Serial.print(temp);
     Serial.print(" Temperatura parse: ");
-    Serial.println(msg);
-    myMQTTtools.publish(MQTT_TOPICT, msg);
+    Serial.println(mqtt_msg_buffer);
+    myMQTTtools.publish(MQTT_TOPICT, mqtt_msg_buffer);
 
-    snprintf(msg, BUFFER_SIZE, "%f", hum);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", hum);
     Serial.print("Humedad: ");
     Serial.println(hum);
     Serial.print(" Humedad parse: ");
-    Serial.println(msg);
-    myMQTTtools.publish(MQTT_TOPICH, msg);
+    Serial.println(mqtt_msg_buffer);
+    myMQTTtools.publish(MQTT_TOPICH, mqtt_msg_buffer);
 
-    snprintf(msg, BUFFER_SIZE, "%f", pres);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", pres);
     Serial.print("Presion: ");
     Serial.println(pres);
     Serial.print(" Presion parse: ");
-    Serial.println(msg);
-    myMQTTtools.publish(MQTT_TOPICP, msg);
+    Serial.println(mqtt_msg_buffer);
+    myMQTTtools.publish(MQTT_TOPICP, mqtt_msg_buffer);
 
     sensorValue = smSensor1.read();
-    snprintf(msg, BUFFER_SIZE, "%d", sensorValue);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%d", sensorValue);
     Serial.print("Humedad Suelo: ");
     Serial.println(sensorValue);
     Serial.print("Humedad Suelo parse: ");
-    Serial.println(msg);
-    myMQTTtools.publish(MQTT_TOPICHS, msg);
+    Serial.println(mqtt_msg_buffer);
+    myMQTTtools.publish(MQTT_TOPICHS, mqtt_msg_buffer);
   }
 
   Serial.println("Loop");
