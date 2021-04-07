@@ -63,23 +63,23 @@ void loop()
     lastMsg = now;
 
     bme.read(pres, temp, hum, tempUnit, presUnit);
-    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%f", temp);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", temp);
     Serial.print("Temperatura: ");
     Serial.println(temp);
     myMQTTtools.publish(MQTT_TOPICT, mqtt_msg_buffer);
 
-    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%f", hum);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", hum);
     Serial.print("Humedad: ");
     Serial.println(hum);
     myMQTTtools.publish(MQTT_TOPICH, mqtt_msg_buffer);
 
-    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%f", pres);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%f", pres);
     Serial.print("Presion: ");
     Serial.println(pres);
     myMQTTtools.publish(MQTT_TOPICP, mqtt_msg_buffer);
 
     soilMoistureValue = smSensor1.read();
-    snprintf(mqtt_msg_buffer, strlen(mqtt_msg_buffer), "%d", soilMoistureValue);
+    snprintf(mqtt_msg_buffer, BUFFER_SIZE, "%d", soilMoistureValue);
     Serial.print("Humedad Suelo: ");
     Serial.println(soilMoistureValue);
     myMQTTtools.publish(MQTT_TOPICHS, mqtt_msg_buffer);
