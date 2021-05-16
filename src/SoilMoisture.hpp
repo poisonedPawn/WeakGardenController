@@ -1,5 +1,5 @@
-#ifndef SOILMOISTURE_H
-#define SOILMOISTURE_H
+#ifndef SOILMOISTURE_HPP
+#define SOILMOISTURE_HPP
 
 #include <WiFiClient.h>
 

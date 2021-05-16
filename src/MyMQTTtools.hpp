@@ -1,11 +1,11 @@
-#ifndef MyMQTTtools_H
-#define MyMQTTtools_H
+#ifndef MyMQTTtools_HPP
+#define MyMQTTtools_HPP
 
 #include <Arduino.h>
 #include <PubSubClient.h>
-#include "Configuration.h"
-#include <ESP8266WiFi.h>
-#include "ESP8266tools.h"
+#include "Configuration.hpp"
+#include "ESP8266tools.hpp"
+#include <WiFiClient.h>
 
 class MyMQTTtools
 {
@@ -19,6 +19,7 @@ public:
     void callback(char *topic, byte *payload, int length);
     void keepalive();
     void publish(const char *topic, String message);
+    void disconnectWifi();
 
 private:
     // MQTT

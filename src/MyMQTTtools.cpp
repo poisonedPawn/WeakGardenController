@@ -1,8 +1,8 @@
-#include "MyMQTTtools.h"
+#include "MyMQTTtools.hpp"
 
 ESP8266tools myESPtools;
-WiFiClient _client;
-PubSubClient MQTTClient(_client);
+WiFiClient _WiFiclient;
+PubSubClient MQTTClient(_WiFiclient);
 
 MyMQTTtools::MyMQTTtools()
 {
@@ -82,7 +82,7 @@ void MyMQTTtools::reconnect()
 
 void MyMQTTtools::keepalive()
 {
-  if (!_client.connected())
+  if (!_WiFiclient.connected())
   {
     reconnect();
   }
@@ -101,4 +101,10 @@ void MyMQTTtools::setup()
 void MyMQTTtools::publish(const char *topic, String message)
 {
   MQTTClient.publish(topic, message.c_str());
+  delay(15);
+}
+
+void MyMQTTtools::disconnectWifi()
+{
+  myESPtools.disconnectWifi();
 }

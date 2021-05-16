@@ -1,5 +1,5 @@
-#include "ESP8266tools.h"
-#include "Configuration.h"
+#include "ESP8266tools.hpp"
+#include "Configuration.hpp"
 #include "Arduino.h"
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -90,4 +90,10 @@ void ESP8266tools::setup_wifi()
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
+    
 }
+
+ void ESP8266tools::disconnectWifi()
+ {
+  WiFi.disconnect();
+ }

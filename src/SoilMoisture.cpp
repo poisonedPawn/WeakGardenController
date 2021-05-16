@@ -1,5 +1,5 @@
-#include "SoilMoisture.h"
-#include "Configuration.h"
+#include "SoilMoisture.hpp"
+#include "Configuration.hpp"
 SoilMoisture::SoilMoisture()
 {
     pin = MOISTURES;
